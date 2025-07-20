@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-
 export default function Home() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,18 +33,42 @@ export default function Home() {
   };
 
   return (
-    <div>
-      {/* Banner */}
-      <img
-        src="/images/banner-img.jpg"
-        alt="Pizza Banner"
-        className="w-100 mb-4"
-        style={{ maxHeight: 400, objectFit: 'cover' }}
-      />
+    <>
+      {/* Banner Section */}
+      <div
+        className="position-relative text-center mb-4"
+        style={{ maxHeight: 400, height: 400, overflow: 'hidden' }}
+      >
+        <img
+          src="/images/banner-img.jpg"
+          alt="Pizza Banner"
+          className="w-100"
+          style={{ objectFit: 'cover', height: '100%' }}
+        />
+
+        <div
+          className="position-absolute top-0 start-0 w-100 h-100"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2))',
+            zIndex: 1,
+          }}
+        ></div>
+
+        <h1
+          className="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+          style={{
+            textShadow: '2px 2px 6px rgba(0,0,0,0.6)',
+            fontSize: '2.5rem',
+            margin: 0,
+            zIndex: 2,
+          }}
+        >
+          VittoPizza Admin Panel
+        </h1>
+      </div>
 
       {/* Cards Section */}
       <div className="container mt-4">
-
         <div className="row g-4">
           <div className="col-lg-6">
             <div className="card h-auto shadow-sm position-relative">
@@ -70,6 +93,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+
           <div className="col-lg-6">
             <div className="card h-auto shadow-sm position-relative">
               <img
@@ -96,6 +120,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

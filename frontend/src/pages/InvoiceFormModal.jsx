@@ -1,47 +1,65 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function InvoiceFormModal({ items, onClose, onSave }) {
+export default function InvoiceFormModal({ items, invoice, onClose, onSave }) {
   const [customerName, setCustomerName] = useState('');
   const [tax, setTax] = useState(0);
   const [invoiceItems, setInvoiceItems] = useState([]);
 
-  // Add a new empty invoice item row
+  // Initialize form state when invoice prop changes (for edit)
+  useEffect(() => {
+    if (invoice) {
+      setCustomerName(invoice.customer_name || '');
+      setTax(invoice.tax || 0);
+
+      if (Array.isArray(invoice.items)) {
+        const mappedItems = invoice.items.map((item) => ({
+          item_id: item.item_id ?? item.id ?? '',
+          quantity: item.quantity || 1,
+          price: item.price || 0,
+        }));
+        setInvoiceItems(mappedItems);
+      } else {
+        setInvoiceItems([]);
+      }
+    } else {
+      // Clear form for new invoice
+      setCustomerName('');
+      setTax(0);
+      setInvoiceItems([]);
+    }
+  }, [invoice]);
+
   const addInvoiceItem = () => {
     setInvoiceItems([...invoiceItems, { item_id: '', quantity: 1, price: 0 }]);
   };
 
-  // Update invoice item (item_id or quantity)
   const updateInvoiceItem = (index, field, value) => {
     const newItems = [...invoiceItems];
-    newItems[index][field] = value;
+    if (field === 'quantity') {
+      const qty = Number(value);
+      newItems[index][field] = qty > 0 ? qty : 1;
+    } else {
+      newItems[index][field] = value;
+    }
 
-    // If item_id changed, update price automatically from items list
+    // Auto-update price if item_id changes
     if (field === 'item_id') {
       const selectedItem = items.find((i) => i.id === Number(value));
       newItems[index].price = selectedItem ? selectedItem.price : 0;
     }
 
-    // Quantity should be number and >= 1
-    if (field === 'quantity') {
-      const qty = Number(value);
-      newItems[index].quantity = qty > 0 ? qty : 1;
-    }
-
     setInvoiceItems(newItems);
   };
 
-  // Remove invoice item row
   const removeInvoiceItem = (index) => {
     setInvoiceItems(invoiceItems.filter((_, i) => i !== index));
   };
 
-  // Calculate total before tax
   const subtotal = invoiceItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  // Calculate total with tax
   const total = subtotal + tax;
 
   const handleSubmit = async (e) => {
@@ -56,7 +74,6 @@ export default function InvoiceFormModal({ items, onClose, onSave }) {
       return;
     }
 
-    // Prepare payload for backend
     const payload = {
       customer_name: customerName.trim(),
       tax: Number(tax),
@@ -68,9 +85,19 @@ export default function InvoiceFormModal({ items, onClose, onSave }) {
       })),
     };
 
+    // If editing, add id to payload
+    if (invoice && invoice.id) {
+      payload.id = invoice.id;
+    }
+
     try {
-      const res = await fetch('http://localhost:8080/invoices', {
-        method: 'POST',
+      const method = invoice && invoice.id ? 'PUT' : 'POST';
+      const url = invoice && invoice.id
+        ? `http://localhost:8080/invoices/${invoice.id}`
+        : 'http://localhost:8080/invoices';
+
+      const res = await fetch(url, {
+        method: method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
@@ -81,7 +108,9 @@ export default function InvoiceFormModal({ items, onClose, onSave }) {
       }
 
       const data = await res.json();
-      onSave({ id: data.invoice_id, ...payload });
+
+      // Return new invoice object with id from response if any
+      onSave({ id: data.invoice_id || payload.id || 0, ...payload });
     } catch (err) {
       alert(err.message);
     }
@@ -97,7 +126,9 @@ export default function InvoiceFormModal({ items, onClose, onSave }) {
       <div className="modal-dialog modal-lg" role="document">
         <form className="modal-content" onSubmit={handleSubmit}>
           <div className="modal-header">
-            <h5 className="modal-title">Create New Invoice</h5>
+            <h5 className="modal-title">
+              {invoice && invoice.id ? 'Edit Invoice' : 'Create New Invoice'}
+            </h5>
             <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">

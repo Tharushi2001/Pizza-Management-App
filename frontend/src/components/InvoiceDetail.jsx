@@ -2,26 +2,42 @@ import { useEffect, useState, useRef } from 'react';
 
 export default function InvoiceDetail({ invoiceId }) {
   const [invoice, setInvoice] = useState(null);
+  const [items, setItems] = useState([]);  // all items data with names
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const printRef = useRef();
 
   useEffect(() => {
-    fetchInvoice();
+    fetchData();
   }, [invoiceId]);
 
-  const fetchInvoice = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:8080/invoices/${invoiceId}`);
-      if (!res.ok) throw new Error('Failed to fetch invoice');
-      const data = await res.json();
-      setInvoice(data);
+      setError(null);
+
+      // Fetch invoice
+      const resInvoice = await fetch(`http://localhost:8080/invoices/${invoiceId}`);
+      if (!resInvoice.ok) throw new Error('Failed to fetch invoice');
+      const invoiceData = await resInvoice.json();
+
+      // Fetch all items (so we can get item names)
+      const resItems = await fetch('http://localhost:8080/items'); // Adjust URL if needed
+      if (!resItems.ok) throw new Error('Failed to fetch items');
+      const itemsData = await resItems.json();
+
+      setInvoice(invoiceData);
+      setItems(itemsData);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const getItemName = (item_id) => {
+    const found = items.find((item) => item.id === item_id);
+    return found ? found.name : `Item #${item_id}`;
   };
 
   const handlePrint = () => {
@@ -87,7 +103,7 @@ export default function InvoiceDetail({ invoiceId }) {
             {invoice.items && invoice.items.length > 0 ? (
               invoice.items.map((item) => (
                 <tr key={item.id}>
-                  <td>{`Item #${item.item_id}`}</td>
+                  <td>{getItemName(item.item_id)}</td>  {/* Show name here */}
                   <td>{item.quantity}</td>
                   <td>{item.price.toFixed(2)}</td>
                   <td>{(item.price * item.quantity).toFixed(2)}</td>
@@ -104,7 +120,7 @@ export default function InvoiceDetail({ invoiceId }) {
         <h4 className="text-end text-blue mt-4">Total: Rs. {invoice.total.toFixed(2)}</h4>
 
         <div className="text-center mt-4">
-          <button className=" print-btn" onClick={handlePrint}>
+          <button className="print-btn" onClick={handlePrint}>
             Print Invoice
           </button>
         </div>

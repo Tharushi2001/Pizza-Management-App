@@ -15,7 +15,11 @@ func SetupRoutes(router *mux.Router) {
 	router.HandleFunc("/items/{id}", controllers.DeleteItem).Methods("DELETE")
 
 	// Invoice routes
+
 	router.HandleFunc("/invoices", controllers.GetInvoices).Methods("GET")
 	router.HandleFunc("/invoices/{id}", controllers.GetInvoiceByID).Methods("GET")
 	router.HandleFunc("/invoices", controllers.CreateInvoice).Methods("POST")
+	router.HandleFunc("/invoices/{id}", controllers.UpdateInvoice).Methods("PUT")
+	router.HandleFunc("/invoices/{id}", controllers.DeleteInvoice).Methods("DELETE")
+
 }

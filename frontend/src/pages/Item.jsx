@@ -81,7 +81,8 @@ export default function Item() {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-end mb-3">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+               <h2 className='text-orange'>ITEMS</h2>
         <button
           className="new-btn"
           onClick={() => {
