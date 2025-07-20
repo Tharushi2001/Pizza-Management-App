@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import InvoiceFormModal from './InvoiceFormModal'; // Modal to create/edit invoice
+import InvoiceFormModal from './InvoiceFormModal'; 
 
 export default function Invoices({ items }) {
   const [invoices, setInvoices] = useState([]);
@@ -19,12 +19,10 @@ export default function Invoices({ items }) {
       const res = await fetch('http://localhost:8080/invoices');
       if (!res.ok) throw new Error('Failed to fetch invoices');
       const data = await res.json();
-
-      // Ensure data is an array before setting state
       setInvoices(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message);
-      setInvoices([]);  // Reset to empty array on error to avoid null issues
+      setInvoices([]);  
     } finally {
       setLoading(false);
     }
@@ -35,14 +33,14 @@ export default function Invoices({ items }) {
     setShowForm(false);
   };
 
-  // Safe invoices variable to avoid null errors
+
   const safeInvoices = Array.isArray(invoices) ? invoices : [];
 
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Invoices</h2>
-        <button className="btn btn-primary" onClick={() => setShowForm(true)}>
+        <h2 className='text-orange'>INVOICES</h2>
+        <button className="new-btn" onClick={() => setShowForm(true)}>
           + Create New Invoice
         </button>
       </div>

@@ -10,7 +10,7 @@ export default function ItemFormModal({ initialData, onClose, onSave }) {
     image_url:  '',
   });
 
-  // pre‑fill when editing
+  
   useEffect(() => {
     if (initialData) setValues(initialData);
   }, [initialData]);
@@ -33,7 +33,6 @@ export default function ItemFormModal({ initialData, onClose, onSave }) {
         </Modal.Header>
 
         <Modal.Body>
-          {/* ID is shown but not editable when editing */}
           {initialData && (
             <FloatingLabel label="ID" className="mb-3">
               <Form.Control value={values.id} disabled readOnly />

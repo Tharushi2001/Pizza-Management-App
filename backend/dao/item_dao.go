@@ -9,10 +9,8 @@ type Item struct {
 	Name     string  `json:"name"`
 	Type     string  `json:"type"`
 	Price    float64 `json:"price"`
-	ImageURL string  `json:"image_url"` // NEW FIELD
+	ImageURL string  `json:"image_url"`
 }
-
-/* -------------------------  READ  ------------------------- */
 
 func GetAllItems() ([]Item, error) {
 	rows, err := config.DB.Query(`
@@ -47,8 +45,6 @@ func GetItemByID(id int) (*Item, error) {
 	return &it, nil
 }
 
-/* -------------------------  CREATE  ------------------------- */
-
 func CreateItem(it *Item) error {
 	stmt, err := config.DB.Prepare(`
 		INSERT INTO items (name, type, price, image_url)
@@ -71,8 +67,6 @@ func CreateItem(it *Item) error {
 	return nil
 }
 
-/* -------------------------  UPDATE  ------------------------- */
-
 func UpdateItem(it *Item) error {
 	stmt, err := config.DB.Prepare(`
 		UPDATE items
@@ -86,8 +80,6 @@ func UpdateItem(it *Item) error {
 	_, err = stmt.Exec(it.Name, it.Type, it.Price, it.ImageURL, it.ID)
 	return err
 }
-
-/* -------------------------  DELETE  ------------------------- */
 
 func DeleteItem(id int) error {
 	stmt, err := config.DB.Prepare(`DELETE FROM items WHERE id = ?`)

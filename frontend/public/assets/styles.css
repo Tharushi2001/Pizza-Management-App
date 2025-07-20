@@ -1,0 +1,61 @@
+.text-orange{
+    color:orange;
+}
+
+.text-blue{
+    color:#003366;  
+}
+.print-btn{
+    background-color: orange;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    width: 115px;
+    height: 40px;
+}
+.new-btn{
+      background-color: #003366;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    width: 200px;
+    height: 40px;
+
+}
+
+
+.invoice-table thead th {
+  background-color: #003366;  
+  color: white;
+}
+
+.invoice-table tbody tr {
+  background-color: #f2f2f2; 
+}
+
+.invoice-table tbody tr:nth-child(even) {
+  background-color: #e6e6e6; 
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .paper-border,
+  .paper-border * {
+    visibility: visible;
+  }
+
+  .paper-border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+
+  .btn {
+    display: none;
+  }
+}

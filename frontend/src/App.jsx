@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Item from './pages/Item';
 import Invoices from './pages/Invoices';
-import InvoiceDetailWrapper from './components/InvoiceDetailWrapper';  // <-- updated import
+import InvoiceDetailWrapper from './components/InvoiceDetailWrapper';  
 
 import { useEffect, useState } from 'react';
 

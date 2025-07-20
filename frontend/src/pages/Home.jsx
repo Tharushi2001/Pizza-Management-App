@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 
 export default function Home() {
-  const [items, setItems]   = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log("Home mounted – fetching items");
@@ -23,7 +23,7 @@ export default function Home() {
       if (!res.ok) throw new Error('Network response was not ok');
       const data = await res.json();
 
-      console.log('📦 Fetched items:', data);
+      console.log(' Fetched items:', data);
       setItems(data);
     } catch (err) {
       console.error('Failed to fetch items:', err);
@@ -45,9 +45,8 @@ export default function Home() {
 
       {/* Cards Section */}
       <div className="container mt-4">
-        {/* g‑4 adds column gutters all round */}
+
         <div className="row g-4">
-          {/* ── Item Management ── */}
           <div className="col-lg-6">
             <div className="card h-auto shadow-sm position-relative">
               <img
@@ -56,26 +55,21 @@ export default function Home() {
                 alt="Item Management"
                 style={{ maxHeight: 250, objectFit: 'cover' }}
               />
-
-              {/* Overlay button */}
-             <Link
-  to="/items"
-  className="btn btn-primary position-absolute top-50 start-50 translate-middle"
->
-  Manage Items
-</Link>
-
-
+              <Link
+                to="/items"
+                className="new-btn text-decoration-none position-absolute top-50 start-50 translate-middle d-flex align-items-center justify-content-center text-center px-4 py-2"
+                style={{ minWidth: '150px', minHeight: '50px' }}
+              >
+                Manage Items
+              </Link>
               <div className="card-body text-center">
-                <h5 className="card-title">Item Management</h5>
+                <h5 className="card-title mx-3">Item Management</h5>
                 <p className="card-text">
                   Manage pizzas, drinks, sides and more from the menu.
                 </p>
               </div>
             </div>
           </div>
-
-          {/* ── Invoice Management ── */}
           <div className="col-lg-6">
             <div className="card h-auto shadow-sm position-relative">
               <img
@@ -84,13 +78,13 @@ export default function Home() {
                 alt="Invoice Management"
                 style={{ maxHeight: 250, objectFit: 'cover' }}
               />
-
-              {/* Overlay button */}
-              <button
-                className="btn btn-primary position-absolute top-50 start-50 translate-middle"
+              <Link
+                to="/invoices"
+                className="new-btn text-decoration-none position-absolute top-50 start-50 translate-middle d-flex align-items-center justify-content-center text-center px-4 py-2"
+                style={{ minWidth: '150px', minHeight: '50px' }}
               >
                 Manage Invoices
-              </button>
+              </Link>
 
               <div className="card-body text-center">
                 <h5 className="card-title">Invoice Management</h5>

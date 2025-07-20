@@ -6,8 +6,6 @@ export default function Item() {
   const [items, setItems]     = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(null);
-
-  // Modal state
   const [showForm, setShowForm]         = useState(false);
   const [editingItem, setEditingItem]   = useState(null);
 
@@ -83,10 +81,9 @@ export default function Item() {
 
   return (
     <div className="container mt-4">
-      {/* Add new button */}
       <div className="d-flex justify-content-end mb-3">
         <button
-          className="btn btn-primary"
+          className="new-btn"
           onClick={() => {
             setEditingItem(null);
             setShowForm(true);

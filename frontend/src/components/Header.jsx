@@ -19,10 +19,10 @@ export default function Header() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/items">Items</Link>
+              <Link className="nav-link text-white" to="/items">Items</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/invoices">Invoices</Link> {/* optional future page */}
+              <Link className="nav-link text-white" to="/invoices">Invoices</Link> {/* optional future page */}
             </li>
           </ul>
         </div>
